@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="Check your GitHub commit density" name="description" />
+    <meta name="viewport" content="width=device-width" /> 
+    <!--[if IE]>
+      <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+      <meta content="on" http-equiv="cleartype" />
+    <![endif]-->
+    <title>GitHub commit density</title>
+    <style>
+      body {
+        font-family: 'Lucida Grande', 'Lucida Sans', Tahoma, sans-serif;
+        margin: 0 auto;
+        width: 940px;
+      }
+      h1 {
+        font-size: 2em;
+        letter-spacing: -1px;
+      }
+      figure, figcaption {
+        display: block;
+      }
+      figcaption {
+        margin-top: 1em;
+        text-align: center;
+      }
+      #chart {
+        height: 520px;
+        width: 940px;
+      }
+    </style>
+    <script src="//www.google.com/jsapi"></script>
+    <script>
+      (function() {
+        google.load('visualization', '1', { packages: ['corechart'] });
+        google.setOnLoadCallback(function() {
+
+          var data = new google.visualization.DataTable(),
+              el,
+              chart,
+              options;
+
+          data.addColumn('string', 'Hour');
+          data.addColumn('number', 'Count');
+
+          <% @stats.each do |stat| %>
+            data.addRow(['<%= stat.label %>', <%= stat.count %>]);
+          <% end %>
+
+          el = document.getElementById('chart');
+          chart = new google.visualization.ColumnChart(el);
+          options = {
+            title : 'GitHub commit density',
+            hAxis: { title: 'Hours', titleTextStyle: { color: 'black' } },
+            vAxis: { title: 'Commits', titleTextStyle: { color: 'black' } }
+          };
+
+          chart.draw(data, options);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <h1><%= @user %></h1>
+    <figure>
+      <div id="chart"></div>
+      <figcaption>Total #<%= @total %> commits</figcaption>
+    </figure>
+  </body>
+</html>
