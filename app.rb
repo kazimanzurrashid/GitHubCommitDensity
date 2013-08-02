@@ -21,6 +21,7 @@ GitHubStat = Struct.new(:hour, :count) do
 
   def label
     return '12:00 am' if hour == 0
+    return '12:00 pm' if hour == 12
     return "#{hour - 12}:00 pm" if hour > 12
     "#{hour}:00 am"
   end
