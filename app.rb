@@ -49,7 +49,7 @@ class GitHubClient
         client_id: ENV['GITHUB_CLIENT_ID'], 
         client_secret: ENV['GITHUB_CLIENT_SECRET']
       })
-      puts url.request_url
+      puts url.request_uri
       response = http.get url.request_uri
       unless response.is_a? Net::HTTPSuccess
         break if result.any? #return whatever we already have
