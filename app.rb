@@ -44,7 +44,11 @@ class GitHubClient
     # Following is extremely evil code, will bend your server to its knees
     # or crash, use at your own risk
     (1..10).each do |page_counter|
-      url.query = URI.encode_www_form({ page: page_counter })
+      url.query = URI.encode_www_form({ 
+        page: page_counter,
+        client_id: ENV['GITHUB_CLIENT_ID'], 
+        client_secret: ENV['GITHUB_CLIENT_SECRET']
+      })
       response = http.get url.request_uri
       unless response.is_a? Net::HTTPSuccess
         break if result.any? #return whatever we already have
